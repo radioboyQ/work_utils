@@ -138,5 +138,5 @@ ENV/
 /XRequests/
 
 # Ignore config file
-/lib/.config.ini
+.config.ini
 
