@@ -133,4 +133,10 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# Skip XRequests
 /XRequests/
+
+# Ignore config file
+/lib/.config.ini
+
