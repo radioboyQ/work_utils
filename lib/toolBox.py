@@ -85,7 +85,7 @@ def nessus_login(target, port, test):
 
         config_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), ".config.ini")
 
-        if os.path.isfile(config_file):
+        if os.path.isfile(config_file) and (target == 'kali-local' or target == '172.16.209.10' or target == 'dc2astns01.asmt.gps' or target == 'dc2astns01'):
             logging.info('Found a config file')
             config = configparser.ConfigParser()
             config.read(config_file)
