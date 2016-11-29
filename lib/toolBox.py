@@ -104,12 +104,13 @@ def nessus_login(target, port, test):
                 logging.debug("Trying to read the config file for {}.".format(target))
                 access_key = config[target]['access_key']
                 secret_key = config[target]['secret_key']
-            elif target == 'localhost':
                 api_key_bool = True
-                # ConAm API Keys
-                logging.debug("Trying to read the config file for {}.".format(target))
-                access_key = config[target]['access_key']
-                secret_key = config[target]['secret_key']
+            # elif target == 'localhost':
+            #     api_key_bool = True
+            #     # ConAm API Keys
+            #     logging.debug("Trying to read the config file for {}.".format(target))
+            #     access_key = config[target]['access_key']
+            #     secret_key = config[target]['secret_key']
         else:
             logging.warning('Couldn\'t find a config file.')
             logging.warning('Unrecognized Nessus host.')
