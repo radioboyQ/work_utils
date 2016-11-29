@@ -84,6 +84,7 @@ def nessus_login(target, port, test):
         """Container for everything needed to log into Nessus"""
 
         config_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), ".config.ini")
+        api_key_bool = False
 
         if os.path.isfile(config_file) and (target == 'kali-local' or target == '172.16.209.10' or target == 'dc2astns01.asmt.gps' or target == 'dc2astns01'):
             logging.info('Found a config file')
@@ -92,14 +93,13 @@ def nessus_login(target, port, test):
 
             if target == 'kali-local' or target == '172.16.209.10':
                 target = 'kali-local'
-                api_key_bool = True
                 # kali-local API keys
                 logging.debug("Trying to read the config file for {}.".format(target))
                 access_key = config[target]['access_key']
                 secret_key = config[target]['secret_key']
+                api_key_bool = True
             elif target == 'dc2astns01.asmt.gps' or target == 'dc2astns01':
                 target = 'dc2astns01.asmt.gps'
-                api_key_bool = True
                 # dc2astns01.asmt.gps API keys
                 logging.debug("Trying to read the config file for {}.".format(target))
                 access_key = config[target]['access_key']
@@ -112,8 +112,6 @@ def nessus_login(target, port, test):
                 secret_key = config[target]['secret_key']
         else:
             logging.warning('Couldn\'t find a config file.')
-
-            api_key_bool = False
             logging.warning('Unrecognized Nessus host.')
             uname = click.prompt('[?] Username')
             passwd = click.prompt('[?] Password', hide_input=True)
