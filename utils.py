@@ -229,11 +229,12 @@ def scan_export(id, output_path, target, port, test, export_type):
         with open(save_file, 'wb') as oF:
             oF.write(resp)
         click.secho('[*] Done!', fg='green')
+        # napi.log_out()
     else:
         # Test mode
         click.secho('[*] Test mode, not actually downloading the file.', fg='green')
         click.secho('[*] Done!', fg='green')
-        napi.log_out()
+        # napi.log_out()
 
 @mainCLI.command(name='mass-scan-export', short_help='Export all the scans in a given folder from a Nessus server.')
 @click.option('-i', '--folder-id', required=True, type=click.INT, help='ID of the scan on the Nessus server.')
