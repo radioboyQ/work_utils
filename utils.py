@@ -48,7 +48,7 @@ class AliasedGroup(click.Group):
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 @click.group(cls=AliasedGroup, context_settings=CONTEXT_SETTINGS)
-@click.option('-v', '--verbose', help='Show logging messages beyond just error and critical.', is_flag=True)
+@click.option('-v', '--verbose', help='Show logging messages beyond just error and critical. -Work in progress-', is_flag=True)
 @click.pass_context
 def mainCLI(ctx, verbose):
     """
@@ -184,7 +184,7 @@ def nessus_uploader(local_nessus, target, remote_folder, port, test):
 @mainCLI.command(name='scan-export', short_help='Export a scan from a Nessus server.')
 @click.option('-i', '--id', required=True, type=click.INT, help='ID of the scan on the Nessus server.')
 @click.option('-o', '--output-path', type=click.Path(exists=False, file_okay=True, dir_okay=True, resolve_path=True, writable=True), help='Location and/or name to save the scan', envvar='PWD')
-@click.option('-t', '--target', type=click.STRING, help='Server to upload Nessus file. This should be an IP address or hostanme.', default='dc2astns01.asmt.gps')
+@click.option('-t', '--target', type=click.STRING, help='Server to export Nessus file. This should be an IP address or hostanme.', default='dc2astns01.asmt.gps')
 @click.option('-p', '--port', type=click.INT, default='8834')
 @click.option('-eT', '--export-type', help='Define the exported file\'s type.', type=click.Choice(['nessus', 'db', 'pdf', 'html', 'csv']), default='nessus')
 @click.option('--test', is_flag=True, default=False, help='Test authentication to Nessus server.')
@@ -229,12 +229,11 @@ def scan_export(id, output_path, target, port, test, export_type):
         with open(save_file, 'wb') as oF:
             oF.write(resp)
         click.secho('[*] Done!', fg='green')
-        # napi.log_out()
     else:
         # Test mode
         click.secho('[*] Test mode, not actually downloading the file.', fg='green')
         click.secho('[*] Done!', fg='green')
-        # napi.log_out()
+        napi.log_out()
 
 @mainCLI.command(name='mass-scan-export', short_help='Export all the scans in a given folder from a Nessus server.')
 @click.option('-i', '--folder-id', required=True, type=click.INT, help='ID of the scan on the Nessus server.')
@@ -446,8 +445,6 @@ def nessus_scan_default_filename():
 
     default_filename = 'GuidePoint_Security_Nessus_Results_{}.nessus'.format(date)
     return default_filename
-
-
 
 if __name__ == '__main__':
     mainCLI()
