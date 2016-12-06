@@ -80,39 +80,60 @@ class tools():
             err_str = '{}'.format(cmd_rtn.stderr.decode("utf-8"))
             return (False, err_str,)
 
+    def notifications(message, title, sound=True):
+        """
+        Use click to trigger 'terminal-notifier' to send messages to a user
+        :param message: String to send to user
+        :param title: Title of box to pop
+        :param subtitle: Subtitle of box to pop
+        :return:
+        """
+
+        if sound == True:
+            sound_type = 'Sosumi'
+            args = ['-message', message, '-title', title, '-sound', sound_type, '-json', '-appIcon',
+                    'http://localhost/glider-small.png']
+            output = subprocess.Popen(['/usr/local/bin/terminal-notifier', ] + args, stdout=subprocess.PIPE,
+                                      stderr=subprocess.STDOUT)
+        else:
+            args = ['-message', message, '-title', title, '-json', '-appIcon', 'http://localhost/glider-small.png']
+            output = subprocess.Popen(['/usr/local/bin/terminal-notifier', ] + args, stdout=subprocess.PIPE,
+                                      stderr=subprocess.STDOUT)
+
 def nessus_login(target, port, test):
         """Container for everything needed to log into Nessus"""
 
         config_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), ".config.ini")
-        api_key_bool = False
 
-        if os.path.isfile(config_file) and (target == 'kali-local' or target == '172.16.209.10' or target == 'dc2astns01.asmt.gps' or target == 'dc2astns01'):
+        if os.path.isfile(config_file):
             logging.info('Found a config file')
             config = configparser.ConfigParser()
             config.read(config_file)
 
             if target == 'kali-local' or target == '172.16.209.10':
                 target = 'kali-local'
+                api_key_bool = True
                 # kali-local API keys
                 logging.debug("Trying to read the config file for {}.".format(target))
                 access_key = config[target]['access_key']
                 secret_key = config[target]['secret_key']
-                api_key_bool = True
             elif target == 'dc2astns01.asmt.gps' or target == 'dc2astns01':
                 target = 'dc2astns01.asmt.gps'
+                api_key_bool = True
                 # dc2astns01.asmt.gps API keys
                 logging.debug("Trying to read the config file for {}.".format(target))
                 access_key = config[target]['access_key']
                 secret_key = config[target]['secret_key']
+            elif target == 'localhost':
                 api_key_bool = True
-            # elif target == 'localhost':
-            #     api_key_bool = True
-            #     # ConAm API Keys
-            #     logging.debug("Trying to read the config file for {}.".format(target))
-            #     access_key = config[target]['access_key']
-            #     secret_key = config[target]['secret_key']
+                # ConAm API Keys
+                logging.debug("Trying to read the config file for {}.".format(target))
+                access_key = config[target]['access_key']
+                secret_key = config[target]['secret_key']
         else:
             logging.warning('Couldn\'t find a config file.')
+
+            api_key_bool = False
             logging.warning('Unrecognized Nessus host.')
             uname = click.prompt('[?] Username')
             passwd = click.prompt('[?] Password', hide_input=True)
