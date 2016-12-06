@@ -1,13 +1,14 @@
 # Standard Library
-import os
+import configparser
 import logging
+import os
 import subprocess
 import sys
-from . import NessusAPIFunctions
-import configparser
 
-# Packages
 import click
+
+from . import NessusAPIFunctions
+
 
 class tools():
     """Common tools"""
