@@ -89,14 +89,48 @@ class utilsCLI(click.MultiCommand):
 
 @click.command(cls=utilsCLI,context_settings=CONTEXT_SETTINGS)
 @click.option('-v', '--verbose', help='Show logging messages beyond just error and critical. -Work in progress-', is_flag=True, default=False)
+@click.option('--config', help='Specify a configuration file to use.', type=click.Path(exists=True, dir_okay=False, resolve_path=True, allow_dash=True), default='~/myToolsPath/utils/.config.ini')
+@click.option('--debug', help='Enable debugging. -Work in progress-', is_flag=True, default=False)
 @pass_context
-def cli(ctx, verbose):
+def cli(ctx, verbose, config, debug):
     """Tools for assessments"""
     # This is the root command
     ctx.verbose = verbose
+    ctx.debug = debug
     # Initialize tool set
-    if ctx.verbose:
-        ctx.toolset = tools(debug=True)
+    if ctx.debug:
+        ctx.toolset = tools(debug)
     else:
-        ctx.toolset = tools(debug=False)
+        ctx.debug = tools(debug=False)
+
+    # Logging
+
+    # Quiet down Requests logging
+    logging.getLogger("requests").setLevel(logging.WARNING)
+    # Quiet down urllib3 logging
+    logging.getLogger("urllib3").setLevel(logging.WARNING)
+
+    logger = logging.getLogger('utils')
+    logger.setLevel(logging.DEBUG)
+    # create console handler and set level
+    ch = logging.StreamHandler()
+
+    if verbose and not ctx.debug:
+        ch.setLevel(logging.INFO)
+    elif ctx.debug:
+        ch.setLevel(logging.DEBUG)
+    else:
+        ch.setLevel(logging.WARNING)
+
+    # create formatter
+    formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+
+    # add formatter to ch
+    ch.setFormatter(formatter)
+
+    # add ch to logger
+    logger.addHandler(ch)
+
+    # Disable propagation
+    logger.propagate = False
 
