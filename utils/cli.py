@@ -89,7 +89,7 @@ class utilsCLI(click.MultiCommand):
 
 @click.command(cls=utilsCLI,context_settings=CONTEXT_SETTINGS)
 @click.option('-v', '--verbose', help='Show logging messages beyond just error and critical. -Work in progress-', is_flag=True, default=False)
-@click.option('--config', help='Specify a configuration file to use.', type=click.Path(exists=True, dir_okay=False, resolve_path=True, allow_dash=True), default='~/myToolsPath/utils/.config.ini')
+@click.option('--config', help='Specify a configuration file to use.', type=click.Path(exists=True, dir_okay=False, resolve_path=True, allow_dash=True), default='/Users/scottfraser/myToolsPath/utils/.config.ini')
 @click.option('--debug', help='Enable debugging. -Work in progress-', is_flag=True, default=False)
 @pass_context
 def cli(ctx, verbose, config, debug):
