@@ -1,17 +1,17 @@
 import configparser
+import logging
 from pprint import pprint
 
-import arrow
 import click
 from terminaltables import AsciiTable, SingleTable
 
 from utils.cli import pass_context
-from ..lib.GoPhishAPI import *
+from utils.lib.GoPhishAPI import *
 
 # gophish_logger = logging.getLogger('utils.gophish-status')
 logger = logging.getLogger(__name__)
 
-@click.group(invoke_without_command=True)
+@click.group(invoke_without_command=True, name='gophish')
 @click.option('-a', '--api-key', help='Specify an API key other than the config file.', type=click.STRING)
 @click.option('-h', '--host', help='Address or domain name where GoPhish server lives.')
 @click.option('-p', '--port', help='Port to connect to.', type=click.IntRange(1,65535))
@@ -115,11 +115,3 @@ def cli(ctx, api_key, host, port, campaign_number):
     table.justify_columns[1] = 'center'
 
     click.echo(table.table)
-
-
-
-
-# @cli.command(name='Test1')
-# def test1():
-#     """First test command"""
-#     pass
