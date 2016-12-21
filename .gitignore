@@ -140,3 +140,5 @@ ENV/
 # Ignore config file
 .config.ini
 
+# SSH Keys
+*id_rsa*
