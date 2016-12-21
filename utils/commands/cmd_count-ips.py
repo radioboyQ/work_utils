@@ -7,8 +7,8 @@ import sys
 import click
 
 # My junk
-from ..lib.iptools import ExcelTools, IPCheck
-from ..lib.iptools import IPToolsExceptions
+from utils.lib.iptools import ExcelTools, IPCheck
+from utils.lib.iptools import IPToolsExceptions
 from utils.cli import pass_context
 
 # Disable Requests' warning when using bad SSL certs
